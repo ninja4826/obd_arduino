@@ -33,7 +33,7 @@ void setCommand(int numBytes) {
     cmd_char[i] = Wire.read();
     i++;
   }
-  String cmd_str = str(cmd_char);
+  String cmd_str(cmd_char);
   switch (cmd_str) {
     case "rpm":
       _command = 0;
