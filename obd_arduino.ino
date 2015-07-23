@@ -5,7 +5,6 @@
 
 COBD obd;
 StaticJsonBuffer<200> jsonBuffer;
-JsonObject& root;
 void setup() {
   Wire.begin(5);
   obd.begin();
@@ -19,7 +18,7 @@ void loop() {
 }
 
 void sendJSON() {
-  // JsonObject& root = jsonBuffer.createObject();
+  JsonObject& root = jsonBuffer.createObject();
   
   int value;
   if (obd.read(PID_RPM, value)) {
