@@ -4,7 +4,17 @@
 #include <OBD.h>
 
 COBD obd;
-String _command;
+int _command;
+int PIDs[] = {
+  PID_RPM,
+  PID_ENGINE_LOAD,
+  PID_COOLANT_TEMP,
+  PID_ABSOLUTE_ENGINE_LOAD,
+  PID_TIMING_ADVANCE,
+  PID_ENGINE_OIL_TEMP,
+  PID_ENGINE_TORQUE_PERCENTAGE,
+  PID_ENGINE_REF_TORQUE
+};
 void setup() {
   Wire.begin(5);
   obd.begin();
