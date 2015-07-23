@@ -17,7 +17,7 @@ void loop() {
 }
 
 void sendJSON() {
-  DynamicJsonBuffer jsonBuffer;
+  StaticJsonBuffer<200> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
   int value;
   if (obd.read(PID_RPM, value)) {
