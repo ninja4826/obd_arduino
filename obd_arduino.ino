@@ -4,6 +4,7 @@
 #include <OBD.h>
 
 COBD obd;
+
 void setup() {
   Wire.begin(5);
   obd.begin();
@@ -16,9 +17,8 @@ void loop() {
 }
 
 void sendJSON() {
-  StaticJsonBuffer<200> jsonBuffer;
+  DynamicJsonBuffer jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
-  
   int value;
   if (obd.read(PID_RPM, value)) {
     root["rpm"] = value;
