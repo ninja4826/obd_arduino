@@ -52,6 +52,6 @@ void readOBD(JsonObject &root) {
     root['engine_torque_percentage'] = value;
   }
   if (obd.read(PID_ENGINE_REF_TORQUE, value)) {
-    root['engine_ref_torque']
+    root['engine_ref_torque'] = value;
   }
 }
