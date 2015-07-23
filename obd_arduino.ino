@@ -19,7 +19,7 @@ void setup() {
   obd.begin();
   while (!obd.init());
   Wire.onReceive(setCommand);
-  Wire.onRequest(sendJSON);
+  Wire.onRequest(readOBD);
 }
 
 void loop() {
@@ -27,47 +27,46 @@ void loop() {
 }
 
 void setCommand(int numBytes) {
-  String cmd;
+  char cmd_char[numBytes + 1];
+  int i = 0;
   while (1 < Wire.available()) {
-    cmd.concat(cmd, Wire.read());
+    cmd_char[i] = Wire.read();
+    i++;
   }
-  _command = cmd;
+  String cmd_str = str(cmd_char);
+  switch (cmd_str) {
+    case "rpm":
+      _command = 0;
+      break;
+    case "engine_load":
+      _command = 1;
+      break;
+    case "coolant_temp":
+      _command = 2;
+      break;
+    case "abs_engine_load":
+      _command = 3;
+      break;
+    case "timing_advance":
+      _command = 4;
+      break;
+    case "engine_oil_temp":
+      _command = 5;
+      break;
+    case "engine_torque_percentage":
+      _command = 6;
+      break;
+    case "engine_ref_torque":
+      _command = 7;
+      break;
+  }
 }
 
-void sendJSON() {
-  
-  // const int BUFFER_SIZE = JSON_OBJECT_SIZE(8);
-  
-  // StaticJsonBuffer<BUFFER_SIZE> jsonBuffer;
-  // JsonObject& root = jsonBuffer.createObject();
-  // int value;
-  // if (obd.read(PID_RPM, value)) {
-  //   root["rpm"] = value;
-  // }
-  // if (obd.read(PID_ENGINE_LOAD, value)) {
-  //   root["engine_load"] = value;
-  // }
-  // if (obd.read(PID_COOLANT_TEMP, value)) {
-  //   root["coolant_temp"] = value;
-  // }
-  // if (obd.read(PID_ABSOLUTE_ENGINE_LOAD, value)) {
-  //   root["abs_engine_load"] = value;
-  // }
-  // if (obd.read(PID_TIMING_ADVANCE, value)) {
-  //   root["timing_advance"] = value;
-  // }
-  // if (obd.read(PID_ENGINE_OIL_TEMP, value)) {
-  //   root["engine_oil_temp"] = value;
-  // }
-  // if (obd.read(PID_ENGINE_TORQUE_PERCENTAGE, value)) {
-  //   root["engine_torque_percentage"] = value;
-  // }
-  // if (obd.read(PID_ENGINE_REF_TORQUE, value)) {
-  //   root["engine_ref_torque"] = value;
-  // }
-  
-  // char json[256];
-  // root.printTo(json, sizeof(json));
-  // Wire.write(json);
-  
+void readOBD() {
+  int value;
+  if (obd.read(PIDs[_command], value)) {
+    Wire.write(value);
+  } else {
+    Wire.write(0);
+  }
 }
