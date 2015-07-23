@@ -23,16 +23,6 @@ void sendJSON() {
   if (obd.read(PID_RPM, value)) {
     root["rpm"] = value;
   }
-//  read from OBD into root
-//  print back to wire.
-}
-
-void readOBD(JsonObject &root) {
-  // Engine
-  int value;
-  if (obd.read(PID_RPM, value)) {
-    root['rpm'] = value;
-  }
   if (obd.read(PID_ENGINE_LOAD, value)) {
     root['engine_load'] = value;
   }
@@ -54,4 +44,6 @@ void readOBD(JsonObject &root) {
   if (obd.read(PID_ENGINE_REF_TORQUE, value)) {
     root['engine_ref_torque'] = value;
   }
+//  read from OBD into root
+//  print back to wire.
 }
