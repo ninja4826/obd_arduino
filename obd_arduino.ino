@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include <ArduinoJson.h>
 #include <OBD.h>
 
 COBD obd;
