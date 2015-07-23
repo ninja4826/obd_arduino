@@ -34,31 +34,24 @@ void setCommand(int numBytes) {
     i++;
   }
   String cmd_str(cmd_char);
-  switch (cmd_str) {
-    case "rpm":
-      _command = 0;
-      break;
-    case "engine_load":
-      _command = 1;
-      break;
-    case "coolant_temp":
-      _command = 2;
-      break;
-    case "abs_engine_load":
-      _command = 3;
-      break;
-    case "timing_advance":
-      _command = 4;
-      break;
-    case "engine_oil_temp":
-      _command = 5;
-      break;
-    case "engine_torque_percentage":
-      _command = 6;
-      break;
-    case "engine_ref_torque":
-      _command = 7;
-      break;
+  if (cmd_str == "rpm") {
+    _command = 0;
+  } else if (cmd_str == "engine_load") {
+    _command = 1;
+  } else if (cmd_str == "coolant_temp") {
+    _command = 2;
+  } else if (cmd_str == "abs_engine_load") {
+    _command = 3;
+  } else if (cmd_str == "timing_advance") {
+    _command = 4;
+  } else if (cmd_str == "engine_oil_temp") {
+    _command = 5;
+  } else if (cmd_str == "engine_torque_percentage") {
+    _command = 6;
+  } else if (cmd_str == "engine_ref_torque") {
+    _command = 7;
+  } else {
+    Wire.write(0);
   }
 }
 
