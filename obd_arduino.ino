@@ -4,13 +4,11 @@
 #include <OBD.h>
 
 COBD obd;
-StaticJsonBuffer<200> jsonBuffer;
 void setup() {
   Wire.begin(5);
   obd.begin();
   while (!obd.init());
   Wire.onRequest(sendJSON);
-  root = jsonBuffer.createObject();
 }
 
 void loop() {
@@ -18,6 +16,7 @@ void loop() {
 }
 
 void sendJSON() {
+  StaticJsonBuffer<200> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
   
   int value;
