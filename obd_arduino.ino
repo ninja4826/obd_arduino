@@ -3,6 +3,9 @@
 #include <OBD.h>
 
 COBD obd;
+
+int myWireAddress = 5;
+int otherWireAddress = 4;
 int _command;
 int PIDs[] = {
   PID_RPM,
@@ -15,7 +18,7 @@ int PIDs[] = {
   PID_ENGINE_REF_TORQUE
 };
 void setup() {
-  Wire.begin(5);
+  Wire.begin(myWireAddress);
   obd.begin();
   while (!obd.init());
   Wire.onReceive(setCommand);
