@@ -6,8 +6,9 @@ COBD obd;
 
 int myWireAddress = 5;
 int otherWireAddress = 4;
-int _command;
+
 int PIDs[] = {
+  // Engine
   PID_RPM,
   PID_ENGINE_LOAD,
   PID_COOLANT_TEMP,
@@ -15,8 +16,46 @@ int PIDs[] = {
   PID_TIMING_ADVANCE,
   PID_ENGINE_OIL_TEMP,
   PID_ENGINE_TORQUE_PERCENTAGE,
-  PID_ENGINE_REF_TORQUE
+  PID_ENGINE_REF_TORQUE,
+  // Intake/Exhaust
+  PID_INTAKE_TEMP,
+  PID_INTAKE_PRESSURE,
+  PID_MAF_FLOW,
+  PID_BAROMETRIC,
+  // Speed/Time
+  PID_SPEED,
+  PID_RUNTIME,
+  PID_DISTANCE,
+  // Driver
+  PID_THROTTLE,
+  PID_AMBIENT_TEMP,
+  // Electric Systems
+  PID_CONTROL_MODULE_VOLTAGE
 };
+
+String commands[] = {
+  "rpm",                      // Engine
+  "engine_load",
+  "coolant_temp",
+  "abs_engine_load",
+  "timing_advance",
+  "engine_oil_temp",
+  "engine_torque_percentage",
+  "engine_ref_torque",
+  "intake_temp",              // Intake/Exhaust
+  "intake_pressure",
+  "maf_flow",
+  "barometric",
+  "speed",                    // Speed/Time
+  "runtime",
+  "distance",
+  "throttle",                 // Driver
+  "ambient_temp",
+  "control_module_voltage"    // Electric Systems
+};
+
+int _result = 0;
+
 void setup() {
   Wire.begin(myWireAddress);
   obd.begin();
@@ -37,32 +76,24 @@ void setCommand(int numBytes) {
     i++;
   }
   String cmd_str(cmd_char);
-  if (cmd_str == "rpm") {
-    _command = 0;
-  } else if (cmd_str == "engine_load") {
-    _command = 1;
-  } else if (cmd_str == "coolant_temp") {
-    _command = 2;
-  } else if (cmd_str == "abs_engine_load") {
-    _command = 3;
-  } else if (cmd_str == "timing_advance") {
-    _command = 4;
-  } else if (cmd_str == "engine_oil_temp") {
-    _command = 5;
-  } else if (cmd_str == "engine_torque_percentage") {
-    _command = 6;
-  } else if (cmd_str == "engine_ref_torque") {
-    _command = 7;
-  } else {
-    Wire.write(0);
+  
+  int calledCommand;
+  bool found = false;
+  for (int i = 0; i < sizeof(commands); i++) {
+    if (cmd_str == commands[i]) {
+      calledCommand = i;
+      found = true;
+      break;
+    }
   }
+  if (found) {
+    if (obd.read(PIDs[calledCommand], _result)) {
+      return;
+    }
+  }
+  _result = 0;
 }
 
 void readOBD() {
-  int value;
-  if (obd.read(PIDs[_command], value)) {
-    Wire.write(value);
-  } else {
-    Wire.write(0);
-  }
+  Wire.write(_result);
 }
