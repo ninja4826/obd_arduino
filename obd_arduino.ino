@@ -52,6 +52,11 @@ String commands[] = {
   "control_module_voltage"    // Electric Systems
 };
 
+typedef struct {
+  char* key,
+  int pid
+} PID;
+
 int _result = 0;
 
 void setup() {
