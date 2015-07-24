@@ -19,7 +19,6 @@ int PIDs[] = {
   PID_ENGINE_REF_TORQUE,
   // Intake/Exhaust
   PID_INTAKE_TEMP,
-  PID_INTAKE_PRESSURE,
   PID_MAF_FLOW,
   PID_BAROMETRIC,
   // Speed/Time
@@ -43,7 +42,6 @@ String commands[] = {
   "engine_torque_percentage",
   "engine_ref_torque",
   "intake_temp",              // Intake/Exhaust
-  "intake_pressure",
   "maf_flow",
   "barometric",
   "speed",                    // Speed/Time
